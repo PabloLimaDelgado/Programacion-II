@@ -30,17 +30,25 @@ public class School {
         this.students = students;
     }
 
-    public void addStudent(Student student){
-        students.add(student);
+    public void addStudent(Student student) throws nombreEstudiante{
+        if(student.getAge() < 18){
+            throw new nombreEstudiante();
+        } else{
+            students.add(student);
+        }
     }
-    public double averageScore(){
+    public double averageScore() throws Exception{
         double sum = 0.0;
 
         for(Student student: students){
             sum += student.getMark();
         }
 
-        return sum/students.size();
+        if(sum < 0){
+            throw new Exception("La nota no peude ser menor a 0");
+        }else{
+            return sum/students.size();
+        }
     }
     public double highestMark(){
         double maxMark = 0.0;
@@ -54,16 +62,21 @@ public class School {
         return maxMark;
     }
 
-    public void searchNameStudent(String name){
+    public void searchNameStudent(String name) throws Exception{
         System.out.println("El alumno es: ");
-        for(Student student: students){
-            if(student.getNombre().equals(name)){
+        boolean encontrado = false;
+        for (Student student : students) {
+            if (student.getNombre().equals(name)) {
+                encontrado = true;
                 System.out.println("Nombre: " + student.getNombre());
                 System.out.println("Edad: " + student.getAge());
                 System.out.println("Nota: " + student.getMark());
+                break;
             }
         }
-        System.out.println(" ");
+        if (!encontrado) {
+            throw new Exception("No se ha encontrado el alumno");
+        }
     }
 
     public void showStudents(){
